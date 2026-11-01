@@ -2,6 +2,7 @@
 """Genera data.json: llegeix els calendaris .ics dels equips (camp "ics") i
 els combina amb els equips amb partits manuals. Només necessita Python 3.9+."""
 import json, re, glob, urllib.request, datetime as dt
+from collections import Counter
 from zoneinfo import ZoneInfo
 
 ACR = {"AE", "FS", "CF", "CFS", "UBAE", "CEM", "IES", "UB", "JJ", "CE", "CES", "CCR", "CET", "FCF", "UE", "CD"}
@@ -25,7 +26,16 @@ def pretty(s):
     return s
 
 
-def parse(text, me):
+def norm(s):
+    return re.sub(r"\s+", " ", s).strip().upper()
+
+
+def get(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "partits-bar/1.0"})
+    return urllib.request.urlopen(req, timeout=30).read().decode("utf-8")
+
+
+def events(text):
     text = re.sub(r"\r?\n[ \t]", "", text)
     out = []
     for ev in text.split("BEGIN:VEVENT")[1:]:
@@ -48,25 +58,65 @@ def parse(text, me):
             hg = ag = None
         else:
             continue
-        is_home = home.upper().startswith(me.upper())
-        m = {"d": when.strftime("%Y-%m-%d"), "t": when.strftime("%H:%M"), "h": is_home,
-             "rival": pretty(away if is_home else home), "place": pretty(g("LOCATION"))}
-        if g("GEO"):
-            m["geo"] = g("GEO").replace(";", ",")
-        if hg is not None:
-            m["gf"], m["gc"] = (hg, ag) if is_home else (ag, hg)
+        out.append({"when": when, "home": norm(home), "away": norm(away), "hg": hg, "ag": ag,
+                    "loc": g("LOCATION"), "geo": g("GEO").replace(";", ",")})
+    return out
+
+
+def mine(evs, me, rec):
+    out = []
+    for e in evs:
+        is_home = e["home"].startswith(me.upper())
+        rival = e["away"] if is_home else e["home"]
+        m = {"d": e["when"].strftime("%Y-%m-%d"), "t": e["when"].strftime("%H:%M"), "h": is_home,
+             "rival": pretty(rival), "place": pretty(e["loc"])}
+        if e["geo"]:
+            m["geo"] = e["geo"]
+        if e["hg"] is not None:
+            m["gf"], m["gc"] = (e["hg"], e["ag"]) if is_home else (e["ag"], e["hg"])
+        elif rival in rec:
+            m["rec"] = rec[rival]
         out.append(m)
     return sorted(out, key=lambda x: (x["d"], x["t"]))
+
+
+def record(evs):
+    """Nom de l'equip (el que surt a tots els partits) i el seu balanç [guanyats, empatats, perduts]."""
+    c = Counter(n for e in evs for n in (e["home"], e["away"]))
+    if not c:
+        return None
+    me = c.most_common(1)[0][0]
+    w = d = l = 0
+    for e in evs:
+        if e["hg"] is None:
+            continue
+        gf, gc = (e["hg"], e["ag"]) if e["home"] == me else (e["ag"], e["hg"])
+        w, d, l = w + (gf > gc), d + (gf == gc), l + (gf < gc)
+    return me, [w, d, l]
+
+
+def standings(cfg):
+    rec = {}
+    try:
+        for t in json.loads(get(cfg["teams"])):
+            try:
+                r = record(events(get(cfg["ics"].format(id=t["id"]))))
+                if r:
+                    rec[r[0]] = r[1]
+            except Exception as ex:
+                print("Avís: no s'ha pogut llegir l'equip", t.get("name"), ex)
+    except Exception as ex:
+        print("Avís: no s'ha pogut llegir la llista d'equips", ex)
+    return rec
 
 
 def main():
     teams = []
     for path in sorted(glob.glob("data/teams/*.json")):
         t = json.load(open(path, encoding="utf-8"))
-        url = t.pop("ics", None)
+        url, st = t.pop("ics", None), t.pop("standings", None)
         if url:
-            req = urllib.request.Request(url, headers={"User-Agent": "partits-bar/1.0"})
-            t["matches"] = parse(urllib.request.urlopen(req, timeout=30).read().decode("utf-8"), t["me"])
+            t["matches"] = mine(events(get(url)), t["me"], standings(st) if st else {})
         teams.append(t)
     try:
         old = json.load(open("data.json", encoding="utf-8"))
