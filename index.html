@@ -28,6 +28,8 @@ h1{font-size:clamp(1.9rem,6vw,2.8rem);line-height:1.05;margin:8px 0 6px}
 .when{font-size:clamp(1.6rem,5.5vw,2.2rem);line-height:1.1;margin:14px 0 0}
 .hour{font-size:clamp(3rem,13vw,4.5rem);line-height:1;color:var(--c);margin:2px 0 12px}
 .vs{font-size:1.3rem;font-weight:700;margin:0 0 6px}
+.rec{margin:0 0 6px;font-size:1.1rem;color:var(--muted)}
+.rec b{color:var(--ink)}
 .where{margin:0}
 .where a{color:var(--c);font-weight:700}
 .blurb{margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line);font-size:1.15rem}
@@ -68,6 +70,7 @@ function weekend(n){var s=new Date(n.getFullYear(),n.getMonth(),n.getDate()),w=s
 function map(m){var q=m.geo||[m.place,m.addr,"Barcelona"].filter(Boolean).join(", ");return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q)}
 function vs(m,t){return m.h?t.me+" contra "+m.rival:m.rival+" contra "+t.me}
 function auto(m,t){var i=t.matches.indexOf(m)%3;return (m.h?["Partit a casa: la pista és nostra, tots a la grada!","Jugem a casa. Porteu-hi alegria i ganes d’animar!","Toca jugar a casa i viure el partit ben a prop!"]:["Sortim a jugar fora. Reviseu el lloc i a animar!","Visita al camp del rival: a donar suport a l’equip!","Partit fora de casa. Comproveu bé el lloc abans de sortir!"])[i]}
+function recLine(m){if(!m.rec)return "";var w=m.rec[0],d=m.rec[1],l=m.rec[2],n=w+d+l;if(!n)return '<p class="rec"><b>Balanç del rival:</b> encara no ha jugat cap partit.</p>';return '<p class="rec"><b>Balanç del rival ('+n+(n===1?" partit":" partits")+'):</b> '+w+(w===1?" guanyat":" guanyats")+', '+d+(d===1?" empatat":" empatats")+', '+l+(l===1?" perdut":" perduts")+'.</p>'}
 function hint(m,t){var p=(t.past||[]).filter(function(x){return x.rival===m.rival})[0];if(!p)return "";var s=p.gf+"-"+p.gc,d=p.gf-p.gc;
  if(d>=3)return "A la ida els vam golejar ("+s+"). Confiança, però sense relaxar-se!";
  if(d>0)return "A la ida vam guanyar ajustat ("+s+"). Rival igualat: a donar-ho tot!";
@@ -81,7 +84,7 @@ function render(t){
  if(!up.length)return head+'<div class="empty">'+(t.matches.length?"No queden més partits al calendari.":"Encara no hi ha partits d’aquest equip. Aviat s’hi afegirà el calendari.")+'</div>';
  var w=weekend(n),f=up[0],m=f.m,inW=f.d>=w[0]&&f.d<w[1];
  var h=head+'<article class="hero"><div class="tags"><span class="tag">'+(inW?"Aquest cap de setmana":"Proper partit")+'</span><span class="tag">'+(m.h?"A casa":"Fora")+'</span></div>'
- +'<p class="when">'+when(f.d)+'</p><p class="hour">'+m.t+' h</p><p class="vs">'+vs(m,t)+'</p>'
+ +'<p class="when">'+when(f.d)+'</p><p class="hour">'+m.t+' h</p><p class="vs">'+vs(m,t)+'</p>'+recLine(m)
  +'<p class="where">'+m.place+(m.addr?', '+m.addr:'')+'. <a href="'+map(m)+'" target="_blank" rel="noopener">Veure al mapa</a></p>'
  +'<p class="blurb">'+(m.blurb||hint(m,t)||auto(m,t))+'</p></article>'+resBlock(t);
  var rest=up.slice(1,6),more=up.length-6;
