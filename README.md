@@ -22,3 +22,7 @@ Pàgina amb el calendari de partits d’Ainet i Roc. El calendari de Roc s’act
 - Si la tasca falla (per exemple, si canvia l’enllaç del calendari), GitHub t’envia un correu i la pàgina conserva les últimes dades.
 - GitHub pot aturar les tasques programades si el repositori passa 60 dies sense activitat. Es reactiven a la pestanya *Actions*.
 - El repositori i la pàgina són públics: només hi ha noms de pila i horaris. No hi posis cognoms ni dades de contacte.
+
+## Autor
+Albert Saragossa Alòs
+Aprofitant la gentilesa de: https://partitsalcalendari.com
