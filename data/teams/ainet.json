@@ -4,7 +4,7 @@
  "sub": "Handbol aleví femení, La Flor de Maig",
  "me": "La Flor de Maig",
  "matches": [
-  {"d": "2026-11-06", "t": "18:30", "h": false, "rival": "Claret-Gràcia / ASME / Voramar", "place": "CEM La Verneda", "addr": "C. Binèfar, 10-16", "blurb": "Partit de tarda al CEM La Verneda. Un bon berenar i molta energia per animar!"},
+  {"d": "2026-11-06", "t": "18:30", "h": false, "rival": "Claret-Gràcia / ASME / Voramar", "place": "Col·legi Sant Josep Claretianes", "addr": "Travessera de Gràcia 256 ", "blurb": "Partit de tarda al CEM La Verneda. Un bon berenar i molta energia per animar!"},
   {"d": "2026-11-13", "t": "18:00", "h": true, "rival": "Club Handbol Sant Andreu", "place": "Escola La Flor de Maig", "addr": "C. Sancho de Ávila, 154", "blurb": "Partit a casa, a la pista de l’escola. Toca omplir la grada!"},
   {"d": "2026-11-20", "t": "19:00", "h": false, "rival": "Escola Virolai", "place": "Poliesportiu Virolai", "addr": "C. del Portell, 9", "blurb": "Partit de divendres al vespre al Virolai. Una bona manera de començar el cap de setmana!"},
   {"d": "2026-11-27", "t": "18:00", "h": true, "rival": "Claret-Gràcia / ASME / Voramar", "place": "Escola La Flor de Maig", "addr": "C. Sancho de Ávila, 154", "blurb": "L’últim partit de la primera fase, a casa i amb la grada plena!"}
