@@ -98,7 +98,7 @@ function start(data){
  var teams=data.teams.map(function(t){var all=t.matches||[];t.past=all.filter(function(m){return m.gf!=null});t.matches=all.filter(function(m){return m.gf==null});return t});
  teams.sort(function(a,b){return nx(a)-nx(b)}).forEach(function(t){var s=document.createElement("section");s.className="team "+t.cls;s.innerHTML=render(t);box.appendChild(s)});
 }
-fetch("data.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(start).catch(function(){box.innerHTML='<div class="empty">No s’han pogut carregar els partits. Torneu-ho a provar més tard.</div>'});
+fetch("data.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(start).catch(function(){box.innerHTML='<div class="empty">No s’han pogut carregar els partits. Torneu-ho a provar més tardor... </div>'});
 </script>
 </body>
 </html>
