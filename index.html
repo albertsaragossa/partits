@@ -72,11 +72,11 @@ function vs(m,t){return m.h?t.me+" contra "+m.rival:m.rival+" contra "+t.me}
 function auto(m,t){var i=t.matches.indexOf(m)%3;return (m.h?["Partit a casa: la pista és nostra, tots a la grada!","Jugem a casa. Porteu-hi alegria i ganes d’animar!","Toca jugar a casa i viure el partit ben a prop!"]:["Sortim a jugar fora. Reviseu el lloc i a animar!","Visita al camp del rival: a donar suport a l’equip!","Partit fora de casa. Comproveu bé el lloc abans de sortir!"])[i]}
 function recLine(m){if(!m.rec)return "";var w=m.rec[0],d=m.rec[1],l=m.rec[2],n=w+d+l;if(!n)return '<p class="rec"><b>Balanç del rival:</b> encara no ha jugat cap partit.</p>';return '<p class="rec"><b>Balanç del rival ('+n+(n===1?" partit":" partits")+'):</b> '+w+(w===1?" guanyat":" guanyats")+', '+d+(d===1?" empatat":" empatats")+', '+l+(l===1?" perdut":" perduts")+'.</p>'}
 function hint(m,t){var p=(t.past||[]).filter(function(x){return x.rival===m.rival})[0];if(!p)return "";var s=p.gf+"-"+p.gc,d=p.gf-p.gc;
- if(d>=3)return "A la ida els vam golejar ("+s+"). Confiança, però sense relaxar-se!";
- if(d>0)return "A la ida vam guanyar ajustat ("+s+"). Rival igualat: a donar-ho tot!";
- if(d===0)return "A la ida vam empatar ("+s+"). Rival de tu a tu, tot pot passar!";
- if(d>-3)return "A la ida vam perdre per poc ("+s+"). Toca revenja!";
- return "A la ida ens van guanyar clarament ("+s+"): rival dur, però a per la revenja!"}
+ if(d>=3)return "A l'anada els vam golejar ("+s+"). Confiança, però sense relaxar-se!";
+ if(d>0)return "A l'anada vam guanyar ajustat ("+s+"). Rival igualat: a donar-ho tot!";
+ if(d===0)return "A l'anada vam empatar ("+s+"). Rival de tu a tu, tot pot passar!";
+ if(d>-3)return "A l'anada vam perdre per poc ("+s+"). Toca revenja!";
+ return "A l'anada ens van guanyar clarament ("+s+"): rival dur, però a per la revenja!"}
 function resBlock(t){if(!t.past||!t.past.length)return "";return '<details class="res"><summary>Consultar resultats</summary><ul>'+t.past.slice().reverse().map(function(p){var s=p.h?t.me+" "+p.gf+" - "+p.gc+" "+p.rival:p.rival+" "+p.gc+" - "+p.gf+" "+t.me,r=p.gf>p.gc?"Victòria":p.gf<p.gc?"Derrota":"Empat";return '<li><b>'+r+'</b><small>'+when(new Date(p.d+"T12:00:00"))+'</small><span>'+s+'</span></li>'}).join("")+'</ul></details>'}
 function render(t){
  var n=new Date(),head='<div class="who"><h2>'+t.name+'</h2><span>'+t.sub+'</span></div>';
@@ -98,7 +98,7 @@ function start(data){
  var teams=data.teams.map(function(t){var all=t.matches||[];t.past=all.filter(function(m){return m.gf!=null});t.matches=all.filter(function(m){return m.gf==null});return t});
  teams.sort(function(a,b){return nx(a)-nx(b)}).forEach(function(t){var s=document.createElement("section");s.className="team "+t.cls;s.innerHTML=render(t);box.appendChild(s)});
 }
-fetch("data.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(start).catch(function(){box.innerHTML='<div class="empty">No s’han pogut carregar els partits. Torneu-ho a provar més tardor... </div>'});
+fetch("data.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(start).catch(function(){box.innerHTML='<div class="empty">No s’han pogut carregar els partits. Torneu-ho a provar més tard. </div>'});
 </script>
 </body>
 </html>
