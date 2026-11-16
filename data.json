@@ -88,7 +88,9 @@
      "h": false,
      "rival": "Arrels AE FS A",
      "place": "Pista IES Príncep de Viana",
-     "geo": "41.427671,2.186933"
+     "geo": "41.427671,2.186933",
+     "gf": 4,
+     "gc": 0
     },
     {
      "d": "2026-11-14",
@@ -96,11 +98,13 @@
      "h": true,
      "rival": "Club Esportiu La Salle Gràcia A",
      "place": "Pavelló CEM Bac de Roda",
-     "geo": "41.414321,2.193189"
+     "geo": "41.414321,2.193189",
+     "gf": 5,
+     "gc": 0
     },
     {
      "d": "2026-11-22",
-     "t": "10:15",
+     "t": "15:30",
      "h": false,
      "rival": "Sant Andreu AE B",
      "place": "Pavelló CEM Camp del Ferro",
