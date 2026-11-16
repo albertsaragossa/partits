@@ -13,16 +13,18 @@ Pàgina amb el calendari de partits d’Ainet i Roc. El calendari de Roc s’act
 
 ## Com s’actualitza
 
-- **Roc:** una tasca automàtica llegeix el calendari (`data/teams/roc.json`, camp `ics`) dos cops al dia i cada dues hores de divendres a diumenge. També llegeix el calendari dels rivals per calcular el seu balanç (guanyats, empatats i perduts), que surt sota el nom del rival al primer partit. Si hi ha canvis o resultats nous, es reescriu `data.json` i la pàgina es posa al dia.
-- **Ainet:** edita `data/teams/ainet.json` des de GitHub (icona del llapis). En desar, la tasca s’executa sola. Cada partit té `d` (data), `t` (hora), `h` (`true` si juga a casa), `rival`, `place`, `addr` i `blurb` (la frase).
-- **Un altre equip:** copia un d’aquests fitxers a `data/teams/` i canvia’n les dades. Si té enllaç `.ics`, posa’l al camp `ics` i no cal escriure partits.
+La FCF no permet que altres webs llegeixin el seu calendari, així que els dos equips es mantenen a mà, cadascun al seu fitxer de `data/teams/`. Per canviar-ne un: obre'l a GitHub, clica el llapis, edita i prem *Commit changes*. En uns minuts la tasca regenera `data.json` i la pàgina es posa al dia.
+
+- **Resultat d’un partit de Roc** (`roc.json`): afegeix al final de la línia del partit els gols de Roc (`gf`) i els del rival (`gc`), per exemple: `{"d": "2026-11-07", ..., "geo": "...", "gf": 2, "gc": 1}`. Recorda la coma abans de `gf`.
+- **Canvi d’hora o de pista:** modifica `d` (data), `t` (hora), `place` (pista) o `geo` (coordenades per al mapa).
+- **Ainet** (`ainet.json`): cada partit té `d`, `t`, `h` (`true` si juga a casa), `rival`, `place`, `addr` i `blurb` (la frase).
+- **Un altre equip:** copia un d’aquests fitxers a `data/teams/` i canvia’n les dades.
+- Si algun dia hi ha una font de calendari que es pugui llegir (un `.ics` públic), es pot posar al camp `ics` del fitxer de l’equip i el script el llegirà sol.
 
 ## A tenir en compte
 
-- Si la tasca falla (per exemple, si canvia l’enllaç del calendari), GitHub t’envia un correu i la pàgina conserva les últimes dades.
-- GitHub pot aturar les tasques programades si el repositori passa 60 dies sense activitat. Es reactiven a la pestanya *Actions*.
 - El repositori i la pàgina són públics: només hi ha noms de pila i horaris. No hi posis cognoms ni dades de contacte.
 
-## Autor
-Albert Saragossa Alòs
-Aprofitant la gentilesa de: https://partitsalcalendari.com
+---
+
+Autoria: Albert Saragossa Alòs
